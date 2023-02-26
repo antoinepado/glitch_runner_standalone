@@ -1,0 +1,279 @@
+/*******************************************************************************
+* Instrument: ROCK beam-line at SOLEIL
+*
+* %I
+* Written by: Stephane Bac, Antoine Padovani, Emmanuel Farhi
+* Date: 23/02/2022
+* Origin: SOLEIL
+* Version: 0.3
+* %INSTRUMENT_SITE: SOLEIL
+*
+* ROCK beam-line at SOLEIL
+*
+* %D
+* ROCK : Rocking Optics for Chemical Kinetics ROCK time-resolved X-ray
+*
+* absorption spectroscopy (XAS) beamline Energy range 4 - 40 keV The ROCK
+* beamline (ROCK being the acronym for Rocking Optics for Chemical Kinetics) is
+* devoted to the study of fast kinetic processes in nanomaterials used in
+* catalysis and batteries. The objective is to contribute to the development of
+* more efficient catalysts and batteries which should find successful industrial
+* applications in the field of energy generation and storage in compliance with
+* the protection of public health and environment. The better knowledge at the
+* atomic scale of nanomaterials involved in catalysis or energy storage provided
+* by time-resolved XAS is recognized by the concerned communities as mandatory
+* for establishing synthesis strategies leading to important breakthroughs in
+* the production of energy from renewable sources and in the development of
+* advanced energy storage devices. 
+*
+* %P
+* Etohit: [eV]   Energy to hit
+* angle_m2a_m2b: [rad]   M2A/M2B mirror's deviation angle, can vary from 0.0035 to 0.0104
+* reflec_material_M1: [string]   material reflectivity file name for M1 mirror
+* reflec_material_M2A_M2B: [string]   material reflectivity file name for M2A and M2B mirror
+* 
+* %L
+* https://www.synchrotron-soleil.fr/en/beamlines/rock
+*
+* %E
+*******************************************************************************/
+
+DEFINE INSTRUMENT soleil_rock_111_short_simplified(
+    Etohit = 5555, 
+    angle_m2a_m2b = 0.008, 
+    string reflec_material_M1 = "Ir.dat", 
+    string reflec_material_M2A_M2B = "Pd.dat",
+    de_value = 0.05,
+    ie_value = 0.45,
+    position_cabane = 32.7
+)
+
+DECLARE 
+%{
+    double dE;
+    double calculated_angle;
+    int n;
+    double length_first_crystal;
+    double length_second_crystal;
+    double center_first_crystal;
+    double cc_ax;
+    double cc_ay;
+    double cc_az;
+    double cc_bx;
+    double cc_by;
+    double cc_bz;
+    double cc_cx;
+    double cc_cy;
+    double cc_cz;
+%}
+
+INITIALIZE 
+%{
+    n=3;
+    length_first_crystal=50e-3;
+    length_second_crystal=70e-3;
+    center_first_crystal=19.25;
+    cc_ax = -5.43096*0.40824829;
+    cc_ay = -5.43096*0.70710678;
+    cc_az = 5.43096*0.57735027;
+    cc_bx = 5.43096*0.81649658;
+    cc_by = 5.43096*0;
+    cc_bz = 5.43096*0.57735027;
+    cc_cx = -5.43096*0.40824829;
+    cc_cy = 5.43096*0.70710678;
+    cc_cz = 5.43096*0.57735027;        
+    calculated_angle=RAD2DEG*asin(12398.4198*sqrt(n)/(2*5.43096*Etohit));
+%}
+
+TRACE 
+COMPONENT Origin = Progress_bar()
+AT (0,0,0) ABSOLUTE
+
+COMPONENT src = Bending_magnet(
+ E0 = Etohit/1000.0, dE = de_value,
+ Ee = 2.75, Ie = ie_value, //Ie can also be 0.5, it depends on the run
+ B = 1.72, //2.8 for the superbend
+ sigex=60e-6, sigey=24.5e-6,
+ //focus_xw=2*tan(1263e-7/2),focus_yh=2*tan(18e-7/2) //source's divergence
+ focus_xw=2*tan(0.0015/2), focus_yh=2*tan(0.00022/2) //beamline's acceptance
+ )
+AT (0,0,0) RELATIVE Origin
+
+COMPONENT slit1 = Slit(
+ xwidth = 0.021, yheight = 0.042)
+AT (0,0,8.5336) RELATIVE PREVIOUS
+
+COMPONENT slit2 = Slit(
+ xwidth = 0.02, yheight = 0.01)
+AT (0,0,0.115) RELATIVE PREVIOUS
+
+COMPONENT mirror_m1 = Mirror_toroid_pothole(
+ reflec = reflec_material_M1, zdepth = 1.1,
+ xwidth = 0.015, radius = 0.0317,
+ radius_o = 9020)
+AT (0,0,1.5014) RELATIVE PREVIOUS
+ROTATED (-0.0045*RAD2DEG/2,0,0) RELATIVE PREVIOUS
+EXTEND %{
+if(!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm_m1 = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (-0.0045*RAD2DEG/2,0,0) RELATIVE PREVIOUS
+
+COMPONENT slit3 = Slit(
+ xwidth = 0.02, yheight = 0.01)
+AT (0,0,1.5405) RELATIVE PREVIOUS
+
+COMPONENT mirror_m2a = Mirror(
+ reflectivity = reflec_material_M2A_M2B, zdepth = 1.1,
+ xwidth = 0.047)
+AT (0,0,5.1295) RELATIVE PREVIOUS
+ROTATED (-angle_m2a_m2b*RAD2DEG/2,0,0) RELATIVE PREVIOUS
+EXTEND %{
+if(!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm_m2a = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (-angle_m2a_m2b*RAD2DEG/2,0,0) RELATIVE PREVIOUS
+
+COMPONENT e_monitor_before_xtal = E_monitor(
+    nE=500, 
+    filename="e_monitor_before_xtal.dat", 
+    xwidth=0.01, 
+    yheight=0.01,
+    Emin=4, 
+    Emax=40, restore_xray = 1)
+AT (0, 0, 1.3312/2) RELATIVE PREVIOUS
+
+COMPONENT slit4 = Slit(
+ xwidth = 0.02, yheight = 0.01)
+AT (0,0,1.3312/2) RELATIVE PREVIOUS
+
+COMPONENT mono_loc = Arm()
+AT (0,0,center_first_crystal-18.1512) RELATIVE PREVIOUS
+
+COMPONENT ray_position = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT mono_rotation = Arm() //y looking at the incoming beam, x looking to the left!
+AT (0,0,0) RELATIVE mono_loc
+ROTATED (-90,0,0) RELATIVE mono_loc
+
+COMPONENT mono_rotation_bragg_angle = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (-calculated_angle,0,0) RELATIVE PREVIOUS
+
+COMPONENT bragg_crystal = Single_crystal(
+ reflections = "Si.lau", material = "Si.txt",
+ xwidth = 0.025, yheight = length_first_crystal,
+ zdepth = 0.01, mosaic = 0.1,
+ barns = 1, ax = cc_ax,
+ ay = cc_ay, az = cc_az,
+ bx = cc_bx, by = cc_by,
+ bz = cc_bz, cx = cc_cx,
+ cy = cc_cy, cz = cc_cz,
+ p_transmit = -1, order = 1,delta_d_d=5e-9)
+AT (0,0,-0.01/2) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+EXTEND %{
+if(!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm_crystal1 = Arm()
+AT (0,0,0) RELATIVE mono_rotation_bragg_angle
+ROTATED (-calculated_angle,0,0) RELATIVE mono_rotation_bragg_angle
+
+SPLIT 10 COMPONENT my_bragg_crystal_two = Single_crystal(
+ reflections = "Si.lau", material = "Si.txt",
+ xwidth = 0.025, yheight = length_second_crystal,
+ zdepth = 0.01, mosaic = 0.1,
+ barns = 1, ax = cc_ax,
+ ay = cc_ay, az = cc_az,
+ bx = cc_bx, by = cc_by,
+ bz = cc_bz, cx = cc_cx,
+ cy = cc_cy, cz = cc_cz,
+ p_transmit = -1, order = 1,delta_d_d=5e-9)
+AT (0,-((length_first_crystal/2)+(length_second_crystal/2)),0.01+0.01) RELATIVE bragg_crystal
+ROTATED (calculated_angle,0,0) RELATIVE PREVIOUS
+EXTEND %{
+if(!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm_crystal2 = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (calculated_angle,0,0) RELATIVE PREVIOUS
+
+COMPONENT mono_rotation_undo = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (90,0,0) RELATIVE PREVIOUS
+
+COMPONENT slit5 = Slit(
+ xwidth = 0.02, yheight = 0.01)
+AT (0,0.01*2*cos(DEG2RAD*calculated_angle),21.135-center_first_crystal) RELATIVE ray_position
+
+COMPONENT slit6 = Slit(
+ xwidth = 0.01, yheight = 0.02)
+AT (0,0,0.115) RELATIVE PREVIOUS
+
+COMPONENT mirror_m2b = Mirror_curved(
+ radius = 5000, length = 1.1,
+ width = 0.047, coating = reflec_material_M2A_M2B)
+AT (0,0,1.19) RELATIVE PREVIOUS
+ROTATED (angle_m2a_m2b*RAD2DEG/2,0,90) RELATIVE PREVIOUS
+EXTEND %{
+if(!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm_m2b = Arm()
+AT (0,0,0) RELATIVE PREVIOUS
+ROTATED (angle_m2a_m2b*RAD2DEG,0,0) RELATIVE mono_rotation_undo
+
+COMPONENT e_monitor_4_to_40kev = E_monitor(
+    nE=500, 
+    filename="e_monitor_4_to_40kev.dat", 
+    xwidth=0.01,
+    yheight=0.01,
+    //xwidth=2*0.008,
+    //yheight=0.008,    
+    Emin=4, 
+    Emax=40, 
+    restore_xray = 1)
+AT (0, 0, position_cabane-22.44) RELATIVE PREVIOUS
+
+COMPONENT e_monitor_4_to_40kev_rock_size = E_monitor(
+    nE=500, 
+    filename="e_monitor_4_to_40kev_rock_size.dat", 
+    xwidth=2*0.008,
+    yheight=0.008,
+    Emin=4, 
+    Emax=40, 
+    restore_xray = 1)
+AT (0, 0, 0) RELATIVE PREVIOUS
+
+COMPONENT e_monitor_centered_seleted_egy = E_monitor(
+    nE=500, 
+    filename="e_monitor_centered_seleted_egy.dat", 
+    xwidth=2*0.008,
+    yheight=0.008,
+    Emin=Etohit/1000.0-1.5*de_value, 
+    Emax=Etohit/1000.0+1.5*de_value, 
+    restore_xray = 1)
+AT (0, 0, 0) RELATIVE PREVIOUS
+
+COMPONENT e_monitor_centered_one_ev_seleted_egy = E_monitor(
+    nE=500, 
+    filename="e_monitor_centered_one_ev_seleted_egy.dat", 
+    xwidth=2*0.008,
+    yheight=0.008,
+    Emin=Etohit/1000.0-0.001, 
+    Emax=Etohit/1000.0+0.001, restore_xray = 1)
+AT (0, 0, 0) RELATIVE PREVIOUS
+
+FINALLY
+%{
+    
+%}
+
+END
