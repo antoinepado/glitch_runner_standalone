@@ -40,7 +40,7 @@
 
 DEFINE INSTRUMENT soleil_rock_111_short_simplified(
     Etohit = 5555, 
-    angle_m2a_m2b = 0.008, 
+    angle_m2a_m2b = 0.008, //(1.75 to 5.2 mrad)*2
     string reflec_material_M1 = "Ir.dat", 
     string reflec_material_M2A_M2B = "Pd.dat",
     de_value = 0.05,
