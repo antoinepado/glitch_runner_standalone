@@ -92,7 +92,7 @@ AT (0,0,0) ABSOLUTE
 COMPONENT src = Bending_magnet(
  E0 = Etohit/1000.0, dE = de_value,
  Ee = 2.75, Ie = ie_value, //Ie can also be 0.5, it depends on the run
- B = 1.72, //2.8 for the superbend
+ B = 2.8, //1.72 for the older bm, 2.8 for the superbend
  sigex=60e-6, sigey=24.5e-6,
  //focus_xw=2*tan(1263e-7/2),focus_yh=2*tan(18e-7/2) //source's divergence
  focus_xw=2*tan(0.0015/2), focus_yh=2*tan(0.00022/2) //beamline's acceptance
