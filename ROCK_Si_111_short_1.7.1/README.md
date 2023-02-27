@@ -4,7 +4,7 @@
 
 ### (hkl) orientations
 
-`python3 theory_glitches_egy_selected.py`  
+`python3 orient_hkl_planes.py`  
 
 In the simulation of McXtrace the (hkl) planes need to be oriented properly. The script outputs the coordinates that are written in the McXtrace .instr files in parameters called ax,ay,az, bx,by,bz and cx,cy,cz.  
 
