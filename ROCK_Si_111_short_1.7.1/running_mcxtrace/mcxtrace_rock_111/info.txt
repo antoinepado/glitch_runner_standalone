@@ -1,0 +1,1 @@
+Put here the mccode.dat McXtrace produces after an energy scan.
