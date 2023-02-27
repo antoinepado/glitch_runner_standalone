@@ -38,7 +38,7 @@ Y_mcxtrace = np.zeros(size_data_mcxtrace)
 i=0
 for elt in data_mcxtrace:
     X_mcxtrace[i] = elt[0]
-    Y_mcxtrace[i] = elt[1] #I0
+    Y_mcxtrace[i] = elt[5] #I0
     i+=1
 
 axis[0].plot(X_mcxtrace, Y_mcxtrace, marker='.', color="b", label='McXtrace')
