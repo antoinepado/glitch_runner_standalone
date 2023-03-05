@@ -1,0 +1,28 @@
+########### For version 1.7.1 (replace 1.7.1 by 3.1 to change versions)
+
+1_Fe
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0046 reflec_material_M2A_M2B="B4C.dat" ie_value=0.45 position_cabane=32.7 Etohit=6950,8150 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1201
+
+Ni
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.006 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=32.7 Etohit=8030,9970 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1941
+
+Ti
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.007 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=27 Etohit=4850,5656 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N807
+
+2_Fe
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0056 reflec_material_M2A_M2B="B4C.dat" ie_value=0.45 position_cabane=32.7 Etohit=6900,8250 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1351
+
+Cu
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0055 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=32.7 Etohit=8780,9980 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1201
+
+3_Fe
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.004 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=32.7 Etohit=6950,8100 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1151
+
+NiCu
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0056 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=32.7 Etohit=8100,9580 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1481
+
+CoNi
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0056 reflec_material_M2A_M2B="B4C.dat" ie_value=0.5 position_cabane=32 Etohit=7500,9600 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N2101
+
+FeNi
+/usr/share/mcxtrace/1.7.1/bin/mxrun --mpi=6 soleil_rock_111_short_simplified.instr angle_m2a_m2b=0.0056 reflec_material_M2A_M2B="B4C.dat" ie_value=0.45 position_cabane=30 Etohit=7000,8950 mosaic_value=0.5 delta_d_d_value=1e-8 -n1e7 -N1951

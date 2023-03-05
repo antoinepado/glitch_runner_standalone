@@ -10,3 +10,9 @@ The stand alone version is the most up to date.
 # Results ROCK Si 111 short
 
 ![ROCK_Si_111_short_1.7.1.png](ROCK_Si_111_short_1.7.1.png)
+
+# Results ROCK Si 111 short (bigger mosaic and lattice spacing variance)
+
+Mosaic is set to 0.5 and delta_d_d is set to 1e-8.  
+
+![ROCK_Si_111_short_1.7.1_bigger_mosaic_deltadd.png](ROCK_Si_111_short_1.7.1_bigger_mosaic_deltadd.png)

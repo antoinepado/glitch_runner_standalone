@@ -45,7 +45,9 @@ DEFINE INSTRUMENT soleil_rock_111_short_simplified(
     string reflec_material_M2A_M2B = "Pd.dat",
     de_value = 0.05,
     ie_value = 0.45,
-    position_cabane = 32.7
+    position_cabane = 32.7,
+    mosaic_value = 0.1,
+    delta_d_d_value = 5e-9
 )
 
 DECLARE 
@@ -168,13 +170,13 @@ ROTATED (-calculated_angle,0,0) RELATIVE PREVIOUS
 COMPONENT bragg_crystal = Single_crystal(
  reflections = "Si.lau", material = "Si.txt",
  xwidth = 0.025, yheight = length_first_crystal,
- zdepth = 0.01, mosaic = 0.1,
+ zdepth = 0.01, mosaic = mosaic_value,
  barns = 1, ax = cc_ax,
  ay = cc_ay, az = cc_az,
  bx = cc_bx, by = cc_by,
  bz = cc_bz, cx = cc_cx,
  cy = cc_cy, cz = cc_cz,
- p_transmit = -1, order = 1,delta_d_d=5e-9)
+ p_transmit = -1, order = 1,delta_d_d=delta_d_d_value)
 AT (0,0,-0.01/2) RELATIVE PREVIOUS
 ROTATED (0,0,0) RELATIVE PREVIOUS
 EXTEND %{
@@ -188,13 +190,13 @@ ROTATED (-calculated_angle,0,0) RELATIVE mono_rotation_bragg_angle
 SPLIT 10 COMPONENT my_bragg_crystal_two = Single_crystal(
  reflections = "Si.lau", material = "Si.txt",
  xwidth = 0.025, yheight = length_second_crystal,
- zdepth = 0.01, mosaic = 0.1,
+ zdepth = 0.01, mosaic = mosaic_value,
  barns = 1, ax = cc_ax,
  ay = cc_ay, az = cc_az,
  bx = cc_bx, by = cc_by,
  bz = cc_bz, cx = cc_cx,
  cy = cc_cy, cz = cc_cz,
- p_transmit = -1, order = 1,delta_d_d=5e-9)
+ p_transmit = -1, order = 1,delta_d_d=delta_d_d_value)
 AT (0,-((length_first_crystal/2)+(length_second_crystal/2)),0.01+0.01) RELATIVE bragg_crystal
 ROTATED (calculated_angle,0,0) RELATIVE PREVIOUS
 EXTEND %{
