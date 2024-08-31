@@ -1,0 +1,44 @@
+{
+  "Accelerator": {
+    "Energy (GeV)": 2.75,
+    "Current (mA)": 500,
+    "&sigma;<sub>z</sub> (mm)": 12,
+    "Nat. Emittance (m.rad)": 3.9e-9,
+    "Coupling Constant": 0.01,
+    "Energy Spread": 0.001025,
+    "&beta;<sub>x,y</sub> (m)": [0.607,15.593],
+    "&alpha;<sub>x,y</sub>": [0.615,0.39],
+    "&eta;<sub>x,y</sub> (m)": [0.034,0],
+    "&eta;'<sub>x,y</sub>": [-0.082,0],
+    "Type": "Storage Ring",
+    "Options": {
+      "Zero Emittance": false
+    }
+  },
+  "Light Source": {
+    "B (T)": 2.84,
+    "&rho; (m)": 3.2299330985915495,
+    "BM Length (m)": 1.26,
+    "BM Fringe Length (m)": 0.05,
+    "Type": "Bending Magnet",
+    "Options": {}
+  },
+  "Configurations": {
+    "Energy Range (eV)": [1000,50000],
+    "Points (Energy)": 101,
+    "X' Acceptance (mrad)": 0.1,
+    "Type": "Far Field & Ideal Condition::Energy Dependence::Simplified Calculation",
+    "Options": {
+      "Define Obs. Point in": "Position",
+      "Energy Step": "Linear",
+      "Accuracy": "Default"
+    }
+  },
+  "Output File": {
+    "Format": "ASCII",
+    "Folder": "C:\\Users\\padoa\\Downloads",
+    "Prefix": "",
+    "Serial Number": 57,
+    "Comment": ""
+  }
+}
